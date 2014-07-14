@@ -1,4 +1,8 @@
-huffl
-=====
+Huffman + LZ77 + DEFLATE
+=======================
 
-Implementations of Huffman coding
+Implementations of the Huffman, LZ77, and DEFLATE compression algorithms.
+
+Currently done:
+
+- Huffman
