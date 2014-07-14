@@ -67,6 +67,7 @@ genLeaves [] = []
 
 {-  Create the huffman tree.
     The given input should a List of Leaves, and should be sorted already.
+    Therefore, x and y should be the Leaves with the least occurin chars.
 -}
 createHuffman :: [Tree CharFreq] -> [Tree CharFreq]
 createHuffman (x:y:ys) = createHuffman nList
