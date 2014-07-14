@@ -100,4 +100,11 @@ huffEither a b
 getAllEncoding :: [CharFreq] -> Tree CharFreq -> [(Char, [Char])]
 getAllEncoding list tree = zip (map value list) (map (\x -> concat $ genEncoding x tree) list)
 
+decode :: [Char] -> Tree CharFreq -> Maybe Char
+decode (x:xs) (Node n l r) 
+    | x == '0'  = decode xs l
+    | x == '1'  = decode xs r
+    | otherwise = Nothing
+decode [] (Leaf x) = Just $ value x
+decode _ (Leaf x) = Nothing
 
