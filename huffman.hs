@@ -18,10 +18,12 @@ instance Ord CharFreq where
 
 -- A tree consists of node, left child tree, right child tree
 data Tree a = Node a (Tree a) (Tree a)
+            | Leaf a
+    deriving (Show)
 
 getFreq :: String -> [CharFreq]
 getFreq l@(x:xs) = 
-    zipWith CharFreq uniques (map (\x -> freq x l) uniques)
+    quicksort $ zipWith CharFreq uniques (map (\x -> freq x l) uniques)
     where 
         uniques = findUniques l
         freq :: Char -> String -> Int
@@ -40,3 +42,30 @@ quicksort l@(x:xs) =
     let lesser = quicksort $ filter (< x) xs
         greater = quicksort $ filter (>= x) xs
     in lesser ++ [x] ++ greater
+
+-- get the CharFreq value from a Node or Leaf
+getCF x =
+    case x of
+        (Node v l r)    -> v
+        (Leaf v)        -> v
+
+instance Eq a => Eq (Tree a) where 
+    a == b = getCF a == getCF b
+
+instance Ord a => Ord (Tree a) where
+    a < b = getCF a < getCF b
+    a <= b = getCF a <= getCF b
+    a > b = getCF a > getCF b
+    a >= b = getCF a >= getCF b
+
+-- Initial forest is all leaves
+
+-- generate the initial forest
+genLeaves :: [CharFreq] -> [Tree CharFreq]
+genLeaves (x:xs) = Leaf x : genLeaves xs
+genLeaves [] = []
+
+-- create the huffman tree
+--createHuffman [] = []
+--createHuffman (x:y:ys) 
+
