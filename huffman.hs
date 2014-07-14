@@ -7,6 +7,15 @@ data CharFreq = CharFreq {
     frequency :: Int
 } deriving (Show)
 
+instance Eq CharFreq where 
+    (CharFreq _ freq1) == (CharFreq _ freq2) = freq1 == freq2
+
+instance Ord CharFreq where
+    (CharFreq _ freq1) < (CharFreq _ freq2) = freq1 < freq2
+    (CharFreq _ freq1) <= (CharFreq _ freq2) = freq1 <= freq2
+    (CharFreq _ freq1) > (CharFreq _ freq2) = freq1 > freq2
+    (CharFreq _ freq1) >= (CharFreq _ freq2) = freq1 >= freq2
+
 -- A tree consists of node, left child tree, right child tree
 data Tree a = Node a (Tree a) (Tree a)
 
@@ -24,3 +33,10 @@ getFreq l@(x:xs) =
 findUniques :: String -> [Char]
 findUniques [] = []
 findUniques (x:xs) = x : findUniques [ y | y <- xs, y /= x ]
+
+quicksort :: Ord a => [a] -> [a]
+quicksort [] = []
+quicksort l@(x:xs) =
+    let lesser = quicksort $ filter (< x) xs
+        greater = quicksort $ filter (>= x) xs
+    in lesser ++ [x] ++ greater
