@@ -65,7 +65,20 @@ genLeaves :: [CharFreq] -> [Tree CharFreq]
 genLeaves (x:xs) = Leaf x : genLeaves xs
 genLeaves [] = []
 
--- create the huffman tree
---createHuffman [] = []
---createHuffman (x:y:ys) 
+{-  Create the huffman tree.
+    The given input should a List of Leaves, and should be sorted already.
+-}
+createHuffman :: [Tree CharFreq] -> [Tree CharFreq]
+createHuffman (x:y:ys) = createHuffman nList
+    where 
+        nList 
+            | length ys > 0    = quicksort $ (merge x y) : ys
+            | otherwise = [merge x y]
+-- single item or empty tree
+createHuffman x = x
 
+merge :: Tree CharFreq -> Tree CharFreq -> Tree CharFreq
+merge t1 t2 
+    | t1 <= t2      = Node (CharFreq '*' newWeight) t1 t2
+    | otherwise     = Node (CharFreq '*' newWeight) t2 t1
+        where newWeight = ((frequency $ getCF t1) + (frequency $ getCF t2))
