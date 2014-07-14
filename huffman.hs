@@ -1,3 +1,5 @@
+module Huffman where
+
 import qualified Data.Map as Map
 import Data.List
 
