@@ -77,8 +77,26 @@ createHuffman (x:y:ys) = createHuffman nList
 -- single item or empty tree
 createHuffman x = x
 
+-- merge two trees into one
 merge :: Tree CharFreq -> Tree CharFreq -> Tree CharFreq
 merge t1 t2 
     | t1 <= t2      = Node (CharFreq '*' newWeight) t1 t2
     | otherwise     = Node (CharFreq '*' newWeight) t2 t1
         where newWeight = ((frequency $ getCF t1) + (frequency $ getCF t2))
+
+-- generate an Huffman encoding for the given CharFreq
+genEncoding :: CharFreq -> Tree CharFreq -> [String]
+genEncoding x (Node n l r) = huffEither ("0" : genEncoding x l) ("1" : genEncoding x r)
+genEncoding x (Leaf n)
+    | value x == value n = [""]
+    | otherwise          = ["-1"]
+
+-- if ends in -1, is not correct target
+huffEither a b
+    | last a == "-1"    = b
+    | otherwise         = a
+
+getAllEncoding :: [CharFreq] -> Tree CharFreq -> [(Char, [Char])]
+getAllEncoding list tree = zip (map value list) (map (\x -> concat $ genEncoding x tree) list)
+
+
